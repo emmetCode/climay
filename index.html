@@ -82,7 +82,6 @@
             transparent 32%
           ),
           linear-gradient(180deg, var(--bg) 0%, #f0eadc 100%);
-        background-attachment: fixed;
         overflow-x: hidden;
       }
       body::before,
@@ -93,11 +92,11 @@
         width: 28rem;
         height: 28rem;
         border-radius: 50%;
-        filter: blur(90px);
+        filter: blur(54px);
         opacity: 0.26;
         pointer-events: none;
         z-index: 0;
-        animation: drift 18s ease-in-out infinite alternate;
+        animation: drift 24s ease-in-out infinite alternate;
       }
       body::before {
         top: -8rem;
@@ -118,7 +117,6 @@
           transform 180ms ease,
           box-shadow 180ms ease,
           border-color 180ms ease;
-        animation: cardFloat 8s ease-in-out infinite;
       }
       .card:hover {
         transform: translateY(-4px);
@@ -144,10 +142,10 @@
       .ambient-orb {
         position: absolute;
         border-radius: 9999px;
-        filter: blur(22px);
+        filter: blur(14px);
         opacity: 0.45;
         pointer-events: none;
-        animation: drift 14s ease-in-out infinite alternate;
+        animation: drift 22s ease-in-out infinite alternate;
       }
       .ambient-orb.one {
         width: 17rem;
@@ -214,7 +212,7 @@
         height: 5rem;
         border-radius: 50%;
         background: rgba(224, 232, 220, 0.2);
-        filter: blur(16px);
+        filter: blur(10px);
         opacity: 0;
         animation: fogDrift 11s ease-in-out infinite alternate;
       }
@@ -284,15 +282,6 @@
           transform: translate3d(22px, 18px, 0) scale(1.08);
         }
       }
-      @keyframes cardFloat {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-4px);
-        }
-      }
       @keyframes pulseGlow {
         0%,
         100% {
@@ -304,6 +293,16 @@
           box-shadow:
             0 0 0 1px rgba(217, 138, 43, 0.9),
             0 0 20px rgba(217, 138, 43, 0.2);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
@@ -723,6 +722,8 @@
         return msgs[m];
       }
 
+      let lastContentKey = "";
+
       function render() {
         const p = nepalParts();
         $("#nowTime").textContent = nepaliNumber(
@@ -748,6 +749,10 @@
           p.year,
         );
         $("#tempStatus").textContent = tempMessage(p.month);
+
+        const contentKey = `${p.year}-${p.month}-${p.day}-${ritu.name}`;
+        if (contentKey === lastContentKey) return;
+        lastContentKey = contentKey;
 
         // Milestones
         const today = dayNum(p.year, p.month, p.day);
