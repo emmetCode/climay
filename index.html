@@ -67,6 +67,9 @@
         --card: #1d2c29;
         --card-border: #33443e;
       }
+      main {
+        perspective: 1400px;
+      }
       body {
         background: var(--bg);
         color: var(--ink);
@@ -111,6 +114,7 @@
         animation-delay: 1.5s;
       }
       .card {
+        position: relative;
         background: var(--card);
         border: 1px solid var(--card-border);
         box-shadow: 0 18px 40px rgba(21, 26, 24, 0.05);
@@ -118,20 +122,49 @@
           transform 180ms ease,
           box-shadow 180ms ease,
           border-color 180ms ease;
-        animation: cardFloat 8s ease-in-out infinite;
+        animation:
+          cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both,
+          cardFloat 8s ease-in-out infinite;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(
+          280px circle at var(--mx, 50%) var(--my, 50%),
+          rgba(217, 138, 43, 0.16),
+          transparent 65%
+        );
+        opacity: 0;
+        transition: opacity 250ms ease;
+        pointer-events: none;
+      }
+      .card.tilt-active::before {
+        opacity: 1;
       }
       .card:hover {
         transform: translateY(-4px);
         box-shadow: 0 22px 48px rgba(21, 26, 24, 0.09);
       }
       .accent-line {
-        background: linear-gradient(90deg, var(--marigold), var(--sage));
+        background: linear-gradient(
+          90deg,
+          var(--marigold),
+          var(--sage),
+          var(--blue),
+          var(--marigold)
+        );
+        background-size: 200% 100%;
+        animation: accentDrift 8s linear infinite;
       }
       .milestone-active {
         border-color: var(--marigold) !important;
         box-shadow: 0 0 0 1px var(--marigold);
         background: var(--marigold-soft) !important;
-        animation: pulseGlow 2.4s ease-in-out infinite;
+        animation:
+          cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both,
+          pulseGlow 2.4s ease-in-out infinite;
       }
       .ritu-active {
         border-color: var(--sage) !important;
@@ -306,6 +339,123 @@
             0 0 20px rgba(217, 138, 43, 0.2);
         }
       }
+      @keyframes cardEnter {
+        0% {
+          opacity: 0;
+          transform: translateY(18px) scale(0.97);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      @keyframes accentDrift {
+        0% {
+          background-position: 0% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+      .hero-title {
+        background: linear-gradient(
+          100deg,
+          #f5f2ea 30%,
+          #ffe3ad 45%,
+          #f5f2ea 60%
+        );
+        background-size: 220% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: shimmerText 7s ease-in-out infinite;
+      }
+      @keyframes shimmerText {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      #nowTime {
+        display: inline-block;
+      }
+      #nowTime.tick {
+        animation: tickPulse 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes tickPulse {
+        0% {
+          transform: scale(1);
+        }
+        30% {
+          transform: scale(1.035);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .dust-field {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .dust-mote {
+        position: absolute;
+        bottom: -1rem;
+        border-radius: 9999px;
+        background: rgba(245, 242, 234, 0.55);
+        animation-name: dustRise;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+      @keyframes dustRise {
+        0% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0;
+        }
+        12% {
+          opacity: 0.6;
+        }
+        88% {
+          opacity: 0.3;
+        }
+        100% {
+          transform: translate3d(var(--drift, 12px), -19rem, 0);
+          opacity: 0;
+        }
+      }
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+      body.armed .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+          transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      body.armed .reveal.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+        body.armed .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
     </style>
   </head>
   <body class="font-body min-h-full">
@@ -322,16 +472,16 @@
       <div class="ambient-orb one"></div>
       <div class="ambient-orb two"></div>
       <div class="ambient-orb three"></div>
+      <div class="dust-field" aria-hidden="true"></div>
 
       <div class="max-w-5xl mx-auto px-6 py-10 md:py-14 relative z-10">
         <h1
-          class="font-display text-3xl md:text-5xl font-semibold mt-2 soft-underline"
-          style="color: #f5f2ea"
+          class="hero-title font-display text-3xl md:text-5xl font-semibold mt-2 soft-underline"
         >
           नेपालको ऋतु
         </h1>
         <p
-          class="mt-3 text-sm tracking-[0.18em] uppercase"
+          class="reveal mt-3 text-sm tracking-[0.18em] uppercase"
           style="color: #e9dcc0; letter-spacing: 0.18em"
         >
           ऋतु • मौसम • दिशा
@@ -436,7 +586,7 @@
         <div class="flex items-baseline justify-between mb-1">
           <h2
             id="milestones-heading"
-            class="font-display text-2xl font-semibold"
+            class="reveal font-display text-2xl font-semibold"
           >
             चार सूर्य संकेत
           </h2>
@@ -446,7 +596,7 @@
             style="color: var(--sage)"
           ></p>
         </div>
-        <p class="text-sm mb-5" style="color: var(--ink-soft)">
+        <p class="reveal text-sm mb-5" style="color: var(--ink-soft)">
           सूर्यको परिवर्तनसँगै दिन र रातको क्रम बदलिन्छ।
         </p>
         <div
@@ -457,10 +607,13 @@
 
       <!-- METEOROLOGICAL CYCLE -->
       <section aria-labelledby="met-heading">
-        <h2 id="met-heading" class="font-display text-2xl font-semibold mb-1">
+        <h2
+          id="met-heading"
+          class="reveal font-display text-2xl font-semibold mb-1"
+        >
           नेपालको मौसम चक्र
         </h2>
-        <p class="text-sm mb-5" style="color: var(--ink-soft)">
+        <p class="reveal text-sm mb-5" style="color: var(--ink-soft)">
           नेपालको भौगोलिक क्षेत्रमा सौर्य वर्षको गति।
         </p>
         <div id="metGrid" class="grid md:grid-cols-3 gap-4"></div>
@@ -468,10 +621,13 @@
 
       <!-- 6 RITUS -->
       <section aria-labelledby="ritu-heading">
-        <h2 id="ritu-heading" class="font-display text-2xl font-semibold mb-1">
+        <h2
+          id="ritu-heading"
+          class="reveal font-display text-2xl font-semibold mb-1"
+        >
           छ ऋतु
         </h2>
-        <p class="text-sm mb-5" style="color: var(--ink-soft)">
+        <p class="reveal text-sm mb-5" style="color: var(--ink-soft)">
           नेपालको परम्परागत छ ऋतु, प्रत्येक दुई चन्द्र महिनामा।
         </p>
         <div
@@ -725,9 +881,21 @@
 
       function render() {
         const p = nepalParts();
-        $("#nowTime").textContent = nepaliNumber(
-          `${p.hour}:${p.minute}:${p.second}`,
-        );
+        const timeStr = nepaliNumber(`${p.hour}:${p.minute}:${p.second}`);
+        const timeEl = $("#nowTime");
+        if (timeEl.textContent !== timeStr) {
+          timeEl.textContent = timeStr;
+          if (!prefersReducedMotion) {
+            timeEl.classList.remove("tick");
+            void timeEl.offsetWidth;
+            timeEl.classList.add("tick");
+          }
+        }
+
+        const today = dayNum(p.year, p.month, p.day);
+        if (today === lastRenderedDay) return;
+        lastRenderedDay = today;
+
         $("#nowDate").textContent =
           `${weekdayName(p.weekday)}, ${nepaliNumber(p.day)}/${nepaliNumber(p.month)}/${nepaliNumber(p.year)}`;
 
@@ -750,7 +918,6 @@
         $("#tempStatus").textContent = tempMessage(p.month);
 
         // Milestones
-        const today = dayNum(p.year, p.month, p.day);
         let closestKey = null,
           closestDist = Infinity,
           closestDays = 0;
@@ -772,8 +939,8 @@
 
         $("#milestoneGrid").innerHTML = cards
           .map(
-            (ms) => `
-    <div class="card rounded-2xl p-5 ${ms.key === closestKey ? "milestone-active" : ""}">
+            (ms, i) => `
+    <div class="card rounded-2xl p-5 ${ms.key === closestKey ? "milestone-active" : ""}" style="animation-delay:${i * 70}ms, ${600 + i * 70}ms">
       <div class="flex items-center justify-between">
         ${iconMon(ms.icon, ms.color)}
         <span class="font-mono text-xs" style="color:var(--ink-soft);">${monthName(ms.m)} ${nepaliNumber(ms.d)}</span>
@@ -787,8 +954,8 @@
 
         // Meteorological periods
         $("#metGrid").innerHTML = MET_PERIODS.map(
-          (mp) => `
-    <div class="card rounded-2xl p-5 ${mp.months.includes(p.month) ? "met-active" : ""}">
+          (mp, i) => `
+    <div class="card rounded-2xl p-5 ${mp.months.includes(p.month) ? "met-active" : ""}" style="animation-delay:${i * 70}ms, ${600 + i * 70}ms">
       ${iconMon(mp.icon, "var(--blue)")}
       <p class="font-mono text-xs mt-3" style="color:var(--ink-soft);">${mp.range}</p>
       <h3 class="font-display font-semibold text-lg mt-1">${mp.title}</h3>
@@ -798,8 +965,8 @@
 
         // Ritus
         $("#rituGrid").innerHTML = RITUS.map(
-          (r) => `
-    <div class="card rounded-2xl p-5 ${r.name === ritu.name ? "ritu-active" : ""}">
+          (r, i) => `
+    <div class="card rounded-2xl p-5 ${r.name === ritu.name ? "ritu-active" : ""}" style="animation-delay:${i * 70}ms, ${600 + i * 70}ms">
       <div class="flex items-center justify-between">
         ${iconMon(r.icon, "var(--sage)")}
         <span class="font-mono text-xs" style="color:var(--ink-soft);">${r.months}</span>
@@ -850,6 +1017,76 @@
 
       function nepaliNumber(value) {
         return String(value).replace(/[0-9]/g, (digit) => "०१२३४५६७८९"[digit]);
+      }
+
+      let lastRenderedDay = null;
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+
+      function spawnDust() {
+        const field = document.querySelector(".dust-field");
+        if (!field) return;
+        const count = 14;
+        for (let i = 0; i < count; i++) {
+          const mote = document.createElement("span");
+          mote.className = "dust-mote";
+          const size = 2 + Math.random() * 3;
+          mote.style.width = `${size}px`;
+          mote.style.height = `${size}px`;
+          mote.style.left = `${Math.random() * 100}%`;
+          mote.style.setProperty("--drift", `${(Math.random() - 0.5) * 40}px`);
+          mote.style.animationDuration = `${9 + Math.random() * 8}s`;
+          mote.style.animationDelay = `${Math.random() * -10}s`;
+          field.appendChild(mote);
+        }
+      }
+
+      function armReveals() {
+        document.body.classList.add("armed");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+        document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+      }
+
+      function enableCardTilt() {
+        document.addEventListener("pointermove", (e) => {
+          const card = e.target.closest(".card");
+          if (!card) return;
+          const rect = card.getBoundingClientRect();
+          const px = ((e.clientX - rect.left) / rect.width) * 100;
+          const py = ((e.clientY - rect.top) / rect.height) * 100;
+          const rx = ((py - 50) / 50) * -4;
+          const ry = ((px - 50) / 50) * 4;
+          card.style.setProperty("--mx", `${px}%`);
+          card.style.setProperty("--my", `${py}%`);
+          card.style.transform = `translateY(-4px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          card.classList.add("tilt-active");
+        });
+        document.addEventListener("pointerout", (e) => {
+          const card = e.target.closest(".card");
+          if (!card || card.contains(e.relatedTarget)) return;
+          card.style.transform = "";
+          card.classList.remove("tilt-active");
+        });
+      }
+
+      if (!prefersReducedMotion) {
+        spawnDust();
+        armReveals();
+        if (isFinePointer) enableCardTilt();
+      } else {
+        document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
       }
 
       render();
