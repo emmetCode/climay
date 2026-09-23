@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="ne">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>नेपालको ऋतु</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Fraunces", "serif"],
+              body: ['"Noto Sans Devanagari"', '"IBM Plex Sans"', "sans-serif"],
+              mono: ['"IBM Plex Mono"', "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #f5f2ea;
+        --bg-soft: #ede8da;
+        --ink: #1e2b29;
+        --ink-soft: #4a5a56;
+        --card: #ffffff;
+        --card-border: #ddd5c2;
+        --slate: #263b45;
+        --slate-2: #35505c;
+        --blue: #2f5673;
+        --marigold: #d98a2b;
+        --marigold-soft: #0f0f0f;
+        --sage: #6f8b72;
+        --rust: #b4552f;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #16211f;
+          --bg-soft: #1d2c29;
+          --ink: #efeae0;
+          --ink-soft: #aeb8b0;
+          --card: #1d2c29;
+          --card-border: #33443e;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #16211f;
+        --bg-soft: #1d2c29;
+        --ink: #efeae0;
+        --ink-soft: #aeb8b0;
+        --card: #1d2c29;
+        --card-border: #33443e;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        background-image:
+          radial-gradient(
+            circle at top left,
+            rgba(217, 138, 43, 0.12),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at right center,
+            rgba(47, 86, 115, 0.1),
+            transparent 32%
+          ),
+          linear-gradient(180deg, var(--bg) 0%, #f0eadc 100%);
+        background-attachment: fixed;
+        overflow-x: hidden;
+      }
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto;
+        width: 28rem;
+        height: 28rem;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.26;
+        pointer-events: none;
+        z-index: 0;
+        animation: drift 18s ease-in-out infinite alternate;
+      }
+      body::before {
+        top: -8rem;
+        left: -5rem;
+        background: rgba(217, 138, 43, 0.4);
+      }
+      body::after {
+        right: -6rem;
+        bottom: -8rem;
+        background: rgba(85, 109, 117, 0.35);
+        animation-delay: 1.5s;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 18px 40px rgba(21, 26, 24, 0.05);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          border-color 180ms ease;
+        animation: cardFloat 8s ease-in-out infinite;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 48px rgba(21, 26, 24, 0.09);
+      }
+      .accent-line {
+        background: linear-gradient(90deg, var(--marigold), var(--sage));
+      }
+      .milestone-active {
+        border-color: var(--marigold) !important;
+        box-shadow: 0 0 0 1px var(--marigold);
+        background: var(--marigold-soft) !important;
+        animation: pulseGlow 2.4s ease-in-out infinite;
+      }
+      .ritu-active {
+        border-color: var(--sage) !important;
+        box-shadow: 0 0 0 1px var(--sage);
+      }
+      .met-active {
+        border-color: var(--blue) !important;
+        box-shadow: 0 0 0 1px var(--blue);
+      }
+      .ambient-orb {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(22px);
+        opacity: 0.45;
+        pointer-events: none;
+        animation: drift 14s ease-in-out infinite alternate;
+      }
+      .ambient-orb.one {
+        width: 17rem;
+        height: 17rem;
+        background: rgba(217, 138, 43, 0.25);
+        top: -5rem;
+        right: 15%;
+      }
+      .ambient-orb.two {
+        width: 15rem;
+        height: 15rem;
+        background: rgba(111, 139, 114, 0.28);
+        bottom: -4rem;
+        left: 10%;
+        animation-delay: 1.2s;
+      }
+      .ambient-orb.three {
+        width: 11rem;
+        height: 11rem;
+        background: rgba(47, 86, 115, 0.22);
+        right: 35%;
+        bottom: -2rem;
+        animation-delay: 2.4s;
+      }
+      .weather-effects {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        opacity: 0.22;
+        transition: opacity 700ms ease;
+      }
+      .rain-field {
+        position: absolute;
+        inset: -20% 0 0;
+        opacity: 0;
+        transform: rotate(12deg);
+        transition: opacity 700ms ease;
+      }
+      .rain-field::before,
+      .rain-field::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          105deg,
+          transparent 0 34px,
+          rgba(192, 222, 226, 0.65) 35px,
+          transparent 36px 72px
+        );
+        background-size: 90px 120px;
+        animation: rainFall 1.1s linear infinite;
+      }
+      .rain-field::after {
+        opacity: 0.45;
+        background-size: 150px 170px;
+        animation-duration: 1.7s;
+        animation-delay: -0.5s;
+      }
+      .fog-band {
+        position: absolute;
+        left: -10%;
+        width: 120%;
+        height: 5rem;
+        border-radius: 50%;
+        background: rgba(224, 232, 220, 0.2);
+        filter: blur(16px);
+        opacity: 0;
+        animation: fogDrift 11s ease-in-out infinite alternate;
+      }
+      .fog-band.one {
+        bottom: 1.5rem;
+      }
+      .fog-band.two {
+        bottom: 4rem;
+        animation-delay: -4s;
+        transform: scaleX(0.8);
+      }
+      body[data-weather="monsoon"] .rain-field {
+        opacity: 0.75;
+      }
+      body[data-weather="winter"] .fog-band {
+        opacity: 0.65;
+      }
+      body[data-weather="monsoon"] .weather-effects,
+      body[data-weather="winter"] .weather-effects {
+        opacity: 0.5;
+      }
+      @keyframes rainFall {
+        from {
+          transform: translate3d(-18px, -80px, 0);
+        }
+        to {
+          transform: translate3d(18px, 180px, 0);
+        }
+      }
+      @keyframes fogDrift {
+        from {
+          transform: translateX(-5%) scaleX(0.9);
+        }
+        to {
+          transform: translateX(8%) scaleX(1.05);
+        }
+      }
+      .soft-underline {
+        position: relative;
+      }
+      .soft-underline::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -0.5rem;
+        height: 0.125rem;
+        background: linear-gradient(
+          90deg,
+          rgba(217, 138, 43, 0.15),
+          rgba(111, 139, 114, 0.8)
+        );
+        border-radius: 9999px;
+      }
+      ::selection {
+        background: var(--marigold-soft);
+      }
+      .focus-ring:focus-visible {
+        outline: 2px solid var(--marigold);
+        outline-offset: 2px;
+      }
+      @keyframes drift {
+        0% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        100% {
+          transform: translate3d(22px, 18px, 0) scale(1.08);
+        }
+      }
+      @keyframes cardFloat {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          box-shadow:
+            0 0 0 1px rgba(217, 138, 43, 0.75),
+            0 0 0 rgba(217, 138, 43, 0);
+        }
+        50% {
+          box-shadow:
+            0 0 0 1px rgba(217, 138, 43, 0.9),
+            0 0 20px rgba(217, 138, 43, 0.2);
+        }
+      }
+    </style>
+  </head>
+  <body class="font-body min-h-full">
+    <!-- HERO HEADER -->
+    <header
+      class="border-b relative overflow-hidden"
+      style="border-color: var(--card-border); background: var(--slate)"
+    >
+      <div class="weather-effects" aria-hidden="true">
+        <div class="rain-field"></div>
+        <div class="fog-band one"></div>
+        <div class="fog-band two"></div>
+      </div>
+      <div class="ambient-orb one"></div>
+      <div class="ambient-orb two"></div>
+      <div class="ambient-orb three"></div>
+
+      <div class="max-w-5xl mx-auto px-6 py-10 md:py-14 relative z-10">
+        <h1
+          class="font-display text-3xl md:text-5xl font-semibold mt-2 soft-underline"
+          style="color: #f5f2ea"
+        >
+          नेपालको ऋतु
+        </h1>
+        <p
+          class="mt-3 text-sm tracking-[0.18em] uppercase"
+          style="color: #e9dcc0; letter-spacing: 0.18em"
+        >
+          ऋतु • मौसम • दिशा
+        </p>
+        <div class="mt-6 flex flex-wrap items-end gap-x-8 gap-y-4">
+          <div>
+            <div
+              id="nowTime"
+              class="font-display text-4xl md:text-6xl font-medium"
+              style="color: #f5f2ea"
+            >
+              --:--:--
+            </div>
+            <div
+              id="nowDate"
+              class="text-sm md:text-base mt-1"
+              style="color: #c7d2cc"
+            >
+              मिति लोड हुँदैछ&hellip;
+            </div>
+          </div>
+          <div class="flex gap-3 flex-wrap">
+            <div
+              class="px-4 py-2 rounded-full text-sm font-medium"
+              style="background: var(--marigold); color: #241705"
+            >
+              <span id="solarSeason">सौर्य ऋतु</span>
+            </div>
+            <div
+              class="px-4 py-2 rounded-full text-sm font-medium border"
+              style="border-color: #5c736c; color: #f5f2ea"
+            >
+              <span id="nepaliRitu">ऋतु</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accent-line h-1 w-full"></div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-10 space-y-14">
+      <!-- CURRENT STATUS CARD -->
+      <section aria-labelledby="status-heading">
+        <h2 id="status-heading" class="sr-only">
+          हालको प्रकाश र तापक्रमको अवस्था
+        </h2>
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center gap-3">
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--marigold)"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path
+                  d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"
+                />
+              </svg>
+              <h3 class="font-display text-xl font-semibold">प्रकाश</h3>
+            </div>
+            <p
+              id="daylightStatus"
+              class="mt-3 text-lg leading-relaxed"
+              style="color: var(--ink-soft)"
+            >
+              गणना हुँदैछ&hellip;
+            </p>
+          </div>
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center gap-3">
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--rust)"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M14 14.76V3.5a2 2 0 0 0-4 0v11.26a4 4 0 1 0 4 0Z" />
+              </svg>
+              <h3 class="font-display text-xl font-semibold">तापक्रम</h3>
+            </div>
+            <p
+              id="tempStatus"
+              class="mt-3 text-lg leading-relaxed"
+              style="color: var(--ink-soft)"
+            >
+              गणना हुँदैछ&hellip;
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLAR MILESTONES -->
+      <section aria-labelledby="milestones-heading">
+        <div class="flex items-baseline justify-between mb-1">
+          <h2
+            id="milestones-heading"
+            class="font-display text-2xl font-semibold"
+          >
+            चार सूर्य संकेत
+          </h2>
+          <p
+            id="nextMilestone"
+            class="text-sm font-mono"
+            style="color: var(--sage)"
+          ></p>
+        </div>
+        <p class="text-sm mb-5" style="color: var(--ink-soft)">
+          सूर्यको परिवर्तनसँगै दिन र रातको क्रम बदलिन्छ।
+        </p>
+        <div
+          id="milestoneGrid"
+          class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        ></div>
+      </section>
+
+      <!-- METEOROLOGICAL CYCLE -->
+      <section aria-labelledby="met-heading">
+        <h2 id="met-heading" class="font-display text-2xl font-semibold mb-1">
+          नेपालको मौसम चक्र
+        </h2>
+        <p class="text-sm mb-5" style="color: var(--ink-soft)">
+          नेपालको भौगोलिक क्षेत्रमा सौर्य वर्षको गति।
+        </p>
+        <div id="metGrid" class="grid md:grid-cols-3 gap-4"></div>
+      </section>
+
+      <!-- 6 RITUS -->
+      <section aria-labelledby="ritu-heading">
+        <h2 id="ritu-heading" class="font-display text-2xl font-semibold mb-1">
+          छ ऋतु
+        </h2>
+        <p class="text-sm mb-5" style="color: var(--ink-soft)">
+          नेपालको परम्परागत छ ऋतु, प्रत्येक दुई चन्द्र महिनामा।
+        </p>
+        <div
+          id="rituGrid"
+          class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        ></div>
+      </section>
+
+      <footer
+        class="pt-6 pb-10 text-xs"
+        style="color: #000000; border-top: 1px solid var(--card-border)"
+      >
+        ऋतुका मिति दायरा ग्रेगोरियन पात्रोमा अनुमानित मिलान हुन्; विक्रम संवतको
+        चन्द्र पात्रो वर्षैपिच्छे केही फरक पर्न सक्छ।
+      </footer>
+    </main>
+
+    <script>
+      const $ = (sel) => document.querySelector(sel);
+      const iconMon = (path, color) =>
+        `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
+      const ICONS = {
+        sunHigh:
+          '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+        balance:
+          '<path d="M12 3v18M5 8l-3 6a4 4 0 0 0 6 0zM19 8l-3 6a4 4 0 0 0 6 0zM5 8h14M9 19h6"/>',
+        snow: '<path d="M12 2v20M4.2 6l15.6 12M19.8 6L4.2 18M2 12h20"/>',
+        leaf: '<path d="M11 20A9 9 0 0 0 20 11a1 1 0 0 0-1-1c-4 0-8 2-9 5s-3 5-3 5Z"/><path d="M5 15c1-2 3-3 5-3"/>',
+        bloom:
+          '<circle cx="12" cy="12" r="3"/><path d="M12 3c1.5 2 1.5 4 0 6M12 21c1.5-2 1.5-4 0-6M3 12c2-1.5 4-1.5 6 0M21 12c-2-1.5-4-1.5-6 0M6 6c2 0 3.5 1 4.5 3M18 18c-2 0-3.5-1-4.5-3M6 18c2 0 3.5-1 4.5-3M18 6c-2 0-3.5 1-4.5 3"/>',
+        mountain: '<path d="m8 21 4-13 4 13M3 21h18M6 12l3-9 3 9"/>',
+        rain: '<path d="M16 13v8M8 13v8M12 15v8M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/>',
+        chill: '<path d="M12 2v20M4.2 6l15.6 12M19.8 6L4.2 18M2 12h20"/>',
+        frost: '<path d="M12 3v18M6 6l12 12M18 6 6 18M12 8l-2 3h4l-2 3"/>',
+      };
+
+      // ---- Nepal time ----
+      function nepalParts() {
+        const fmt = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Kathmandu",
+          hour12: false,
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          weekday: "long",
+        });
+        const obj = {};
+        fmt.formatToParts(new Date()).forEach((p) => (obj[p.type] = p.value));
+        obj.year = +obj.year;
+        obj.month = +obj.month;
+        obj.day = +obj.day;
+        return obj;
+      }
+      function dayNum(y, m, d) {
+        return Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+      }
+
+      // ---- Solar milestones ----
+      const MILESTONES = [
+        {
+          key: "spring",
+          label: "वसन्त विषुव",
+          m: 3,
+          d: 20,
+          icon: ICONS.balance,
+          color: "var(--sage)",
+          fact: "दिन र रात बराबर।",
+          detail: "यसपछि दिनहरू रातभन्दा लामो हुँदै जान्छन्।",
+        },
+        {
+          key: "summer",
+          label: "ग्रीष्म अयनान्त",
+          m: 6,
+          d: 21,
+          icon: ICONS.sunHigh,
+          color: "var(--marigold)",
+          fact: "वर्षकै लामो दिन।",
+          detail: "प्रकाशको अवधि उच्चतम बिन्दुमा पुगेर घट्न थाल्छ।",
+        },
+        {
+          key: "autumn",
+          label: "शरद विषुव",
+          m: 9,
+          d: 22,
+          icon: ICONS.leaf,
+          color: "var(--rust)",
+          fact: "फेरि दिन र रात बराबर।",
+          detail: "यसपछि दिनको प्रकाश छिटो घट्दै जान्छ।",
+        },
+        {
+          key: "winter",
+          label: "शिशिर अयनान्त",
+          m: 12,
+          d: 21,
+          icon: ICONS.snow,
+          color: "var(--blue)",
+          fact: "छोटो दिन, गहिरो चिसो।",
+          detail: "यसपछि दिनहरू फेरि लामो हुन थाल्छन्।",
+        },
+      ];
+
+      // ---- Ritu ranges (approx BS→Gregorian mapping) ----
+      const RITUS = [
+        {
+          name: "Basanta",
+          nepali: "वसन्त",
+          sub: "Spring",
+          months: "चैत्र &ndash; वैशाख",
+          start: [3, 14],
+          end: [5, 14],
+          icon: ICONS.bloom,
+          note: "तोरीका खेत फुल्छन्, पहाडहरू बिस्तारै न्यानिन्छन्।",
+        },
+        {
+          name: "Grishma",
+          nepali: "ग्रीष्म",
+          sub: "Summer",
+          months: "जेठ &ndash; असार",
+          start: [5, 15],
+          end: [7, 15],
+          icon: ICONS.sunHigh,
+          note: "मनसुन सुरु हुनुअघिको उच्च गर्मीको समय।",
+        },
+        {
+          name: "Barsha",
+          nepali: "वर्षा",
+          sub: "Monsoon",
+          months: "श्रावण &ndash; भाद्र",
+          start: [7, 16],
+          end: [9, 16],
+          icon: ICONS.rain,
+          note: "भारी मनसुनी वर्षा, हरिया हुँदै जाने खेतका गह्रा।",
+        },
+        {
+          name: "Sharad",
+          nepali: "शरद",
+          sub: "Autumn",
+          months: "आश्विन &ndash; कार्तिक",
+          start: [9, 17],
+          end: [11, 15],
+          icon: ICONS.leaf,
+          note: "आकाश सफा हुन्छ; दशैं र तिहारको मौसम।",
+        },
+        {
+          name: "Hemanta",
+          nepali: "हेमन्त",
+          sub: "Late Autumn",
+          months: "मंसिर &ndash; पौष",
+          start: [11, 16],
+          end: [1, 13],
+          icon: ICONS.chill,
+          note: "चिसा बिहान, हिमाल हेर्न सबैभन्दा राम्रो समय।",
+        },
+        {
+          name: "Shishir",
+          nepali: "शिशिर",
+          sub: "Winter",
+          months: "माघ &ndash; फागुन",
+          start: [1, 14],
+          end: [3, 13],
+          icon: ICONS.frost,
+          note: "काठमाडौं उपत्यकामा वर्षकै बाक्लो कुहिरो।",
+        },
+      ];
+
+      const MET_PERIODS = [
+        {
+          range: "मध्य असोज &ndash; फागुन",
+          months: [10, 11, 12, 1, 2],
+          title: "मनसुनपछि गहिरो शिशिरसम्म",
+          text: "मनसुन हट्दै जान्छ र हिमाली चिसो हावा चल्न थाल्छ। हिमाल यात्राका लागि यो राम्रो समय हो, पुस र माघमा चिसो सबैभन्दा बढी हुन्छ।",
+          icon: ICONS.mountain,
+        },
+        {
+          range: "चैत &ndash; जेठ",
+          months: [3, 4, 5],
+          title: "मनसुनअघिको तीव्र गर्मी",
+          text: "तापक्रम छिटो बढ्छ। मनसुन आउनुअघि तराईमा तापक्रम ४०&deg;C भन्दा माथि र काठमाडौं उपत्यकामा ३०&deg;C सम्म पुग्न सक्छ।",
+          icon: ICONS.sunHigh,
+        },
+        {
+          range: "असार &ndash; असोज",
+          months: [6, 7, 8, 9],
+          title: "मनसुनी वर्षाले शीतल बनेको गर्मी",
+          text: "दिनहरू लामो हुन्छन्, तर मनसुनी बादल र वर्षाले मनसुनअघिको चरम गर्मीभन्दा तापक्रमलाई मध्यम राख्छ।",
+          icon: ICONS.rain,
+        },
+      ];
+
+      function getAstronomicalSeason(m, d, y) {
+        const n = dayNum(y, m, d);
+        const spring = dayNum(y, 3, 20),
+          summer = dayNum(y, 6, 21),
+          autumn = dayNum(y, 9, 22),
+          winter = dayNum(y, 12, 21);
+        if (n >= spring && n < summer) return "Spring";
+        if (n >= summer && n < autumn) return "Summer";
+        if (n >= autumn && n < winter) return "Autumn";
+        return "Winter";
+      }
+
+      function getRitu(m, d) {
+        const target = m * 100 + d;
+        for (const r of RITUS) {
+          const s = r.start[0] * 100 + r.start[1],
+            e = r.end[0] * 100 + r.end[1];
+          if (s <= e) {
+            if (target >= s && target <= e) return r;
+          } else {
+            if (target >= s || target <= e) return r;
+          } // wraps year boundary
+        }
+        return RITUS[0];
+      }
+
+      function daylightMessage(m, d, y) {
+        const n = dayNum(y, m, d);
+        const jun21 = dayNum(y, 6, 21),
+          dec21 = dayNum(y, 12, 21),
+          dec22 = dayNum(y, 12, 22);
+        if (n > jun21 && n <= dec21)
+          return "अहिले दिन छोटिँदै छन्। ग्रीष्म अयनान्तपछि वर्षकै छोटो दिनतर्फ अघि बढ्दैछौं।";
+        if (n === jun21)
+          return "आज ग्रीष्म अयनान्त हो \u2014 वर्षकै लामो दिन। भोलिदेखि दिन छोटिन थाल्छ।";
+        if (n === dec21 || n === dec22)
+          return "आज शिशिर अयनान्त हो \u2014 वर्षकै छोटो दिन। अबदेखि दिन लामो हुन थाल्छ।";
+        return "अहिले दिन लामो हुँदैछन्। शिशिर अयनान्तपछि वर्षकै लामो दिनतर्फ अघि बढ्दैछौं।";
+      }
+
+      function tempMessage(m) {
+        const msgs = {
+          1: "गहिरो शिशिर। उपत्यकामा हिमाली चिसो हावा चल्छ र बिहानहरू वर्षकै चिसा हुन्छन्।",
+          2: "अझै शिशिरकै प्रभाव छ, तर घाम माथि चढेसँगै दिउँसो केही न्यानो हुन थाल्छ।",
+          3: "न्यानोपन छिटो बढ्दैछ। मनसुनअघिको गर्मी बढेसँगै शिशिरको चिसो हराउँदैछ।",
+          4: "विशेषगरी तराईमा मनसुनअघिको गर्मी तीव्र हुँदैछ।",
+          5: "मनसुनअघिको उच्च गर्मी \u2014 तराईमा ४०\u00b0C भन्दा माथि र काठमाडौंमा ३०\u00b0C भन्दा बढी \u2014 वर्षा सुरु हुनुअघिको समय।",
+          6: "मनसुन आइपुग्छ र आर्द्रता बढ्छ, जसले लामो गर्मीका दिनलाई केही शीतल बनाउँछ।",
+          7: "पूरै मनसुन। लामो दिन भए पनि बादल र वर्षाले तापक्रम मध्यम राख्छ।",
+          8: "मनसुन जारी छ; धेरैजसो दिन न्यानो, ओसिलो र बादलयुक्त हुन्छन्।",
+          9: "वर्षा कम हुँदै जाँदा मनसुनी गर्मीबाट शरदको चिसोपनतर्फ तापक्रम बदलिँदैछ।",
+          10: "मनसुन हट्दैछ र आकाश सफा हुँदैछ। साँझहरू चिसा र स्वच्छ महसुस हुन्छन्।",
+          11: "हिमाली चिसो हावा चल्न थालेको छ। बिहान र रात झन् चिसिँदैछन्।",
+          12: "दिन छोटिँदै जाँदा शिशिर गहिरिँदैछ; सबैभन्दा चिसो समय नजिकिँदैछ।",
+        };
+        return msgs[m];
+      }
+
+      function render() {
+        const p = nepalParts();
+        $("#nowTime").textContent = nepaliNumber(
+          `${p.hour}:${p.minute}:${p.second}`,
+        );
+        $("#nowDate").textContent =
+          `${weekdayName(p.weekday)}, ${nepaliNumber(p.day)}/${nepaliNumber(p.month)}/${nepaliNumber(p.year)}`;
+
+        const season = getAstronomicalSeason(p.month, p.day, p.year);
+        $("#solarSeason").textContent = `सौर्य ${seasonName(season)}`;
+        const ritu = getRitu(p.month, p.day);
+        $("#nepaliRitu").textContent = `${ritu.nepali} ऋतु`;
+        document.body.dataset.weather =
+          ritu.name === "Barsha"
+            ? "monsoon"
+            : ritu.name === "Shishir"
+              ? "winter"
+              : "clear";
+
+        $("#daylightStatus").textContent = daylightMessage(
+          p.month,
+          p.day,
+          p.year,
+        );
+        $("#tempStatus").textContent = tempMessage(p.month);
+
+        // Milestones
+        const today = dayNum(p.year, p.month, p.day);
+        let closestKey = null,
+          closestDist = Infinity,
+          closestDays = 0;
+        const cards = MILESTONES.map((ms) => {
+          let target = dayNum(p.year, ms.m, ms.d);
+          if (target < today) target = dayNum(p.year + 1, ms.m, ms.d);
+          const dist = target - today;
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestKey = ms.key;
+            closestDays = dist;
+          }
+          return ms;
+        });
+        $("#nextMilestone").textContent =
+          closestDays === 0
+            ? `आज: ${MILESTONES.find((m) => m.key === closestKey).label}`
+            : `अर्को संकेत ${nepaliNumber(closestDays)} दिनमा`;
+
+        $("#milestoneGrid").innerHTML = cards
+          .map(
+            (ms) => `
+    <div class="card rounded-2xl p-5 ${ms.key === closestKey ? "milestone-active" : ""}">
+      <div class="flex items-center justify-between">
+        ${iconMon(ms.icon, ms.color)}
+        <span class="font-mono text-xs" style="color:var(--ink-soft);">${monthName(ms.m)} ${nepaliNumber(ms.d)}</span>
+      </div>
+      <h3 class="font-display font-semibold text-lg mt-3">${ms.label}</h3>
+      <p class="text-sm font-medium mt-1" style="color:${ms.color};">${ms.fact}</p>
+      <p class="text-sm mt-2" style="color:var(--ink-soft);">${ms.detail}</p>
+    </div>`,
+          )
+          .join("");
+
+        // Meteorological periods
+        $("#metGrid").innerHTML = MET_PERIODS.map(
+          (mp) => `
+    <div class="card rounded-2xl p-5 ${mp.months.includes(p.month) ? "met-active" : ""}">
+      ${iconMon(mp.icon, "var(--blue)")}
+      <p class="font-mono text-xs mt-3" style="color:var(--ink-soft);">${mp.range}</p>
+      <h3 class="font-display font-semibold text-lg mt-1">${mp.title}</h3>
+      <p class="text-sm mt-2 leading-relaxed" style="color:var(--ink-soft);">${mp.text}</p>
+    </div>`,
+        ).join("");
+
+        // Ritus
+        $("#rituGrid").innerHTML = RITUS.map(
+          (r) => `
+    <div class="card rounded-2xl p-5 ${r.name === ritu.name ? "ritu-active" : ""}">
+      <div class="flex items-center justify-between">
+        ${iconMon(r.icon, "var(--sage)")}
+        <span class="font-mono text-xs" style="color:var(--ink-soft);">${r.months}</span>
+      </div>
+      <h3 class="font-display font-semibold text-lg mt-3">${r.nepali}</h3>
+      <p class="text-sm mt-2" style="color:var(--ink-soft);">${r.note}</p>
+    </div>`,
+        ).join("");
+      }
+
+      function monthName(m) {
+        return [
+          "पुस",
+          "माघ",
+          "फागुन",
+          "चैत",
+          "वैशाख",
+          "जेठ",
+          "असार",
+          "साउन",
+          "भदौ",
+          "असोज",
+          "कात्तिक",
+          "मंसिर",
+        ][m - 1];
+      }
+
+      function weekdayName(day) {
+        return {
+          Sunday: "आइतबार",
+          Monday: "सोमबार",
+          Tuesday: "मंगलबार",
+          Wednesday: "बुधबार",
+          Thursday: "बिहीबार",
+          Friday: "शुक्रबार",
+          Saturday: "शनिबार",
+        }[day];
+      }
+
+      function seasonName(season) {
+        return {
+          Spring: "वसन्त",
+          Summer: "ग्रीष्म",
+          Autumn: "शरद",
+          Winter: "शिशिर",
+        }[season];
+      }
+
+      function nepaliNumber(value) {
+        return String(value).replace(/[0-9]/g, (digit) => "०१२३४५६७८९"[digit]);
+      }
+
+      render();
+      setInterval(render, 1000);
+    </script>
+  </body>
+</html>
