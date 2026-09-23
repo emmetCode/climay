@@ -447,6 +447,209 @@
           transform: none;
         }
       }
+
+      /* Vibrant visual layer: transform/opacity animations keep scrolling light. */
+      :root {
+        --bg: #071321;
+        --bg-soft: #0e2030;
+        --ink: #f5f3eb;
+        --ink-soft: #b9c9ce;
+        --card: rgba(14, 32, 48, 0.82);
+        --card-border: rgba(116, 205, 193, 0.24);
+        --slate: #09172a;
+        --blue: #45b8e8;
+        --marigold: #ffb84d;
+        --marigold-soft: #1b1520;
+        --sage: #61d2b1;
+        --rust: #ff6f61;
+      }
+      body {
+        background-color: var(--bg);
+        background-image:
+          radial-gradient(
+            circle at 12% 6%,
+            rgba(255, 184, 77, 0.22),
+            transparent 24%
+          ),
+          radial-gradient(
+            circle at 88% 18%,
+            rgba(69, 184, 232, 0.2),
+            transparent 27%
+          ),
+          linear-gradient(145deg, #071321 0%, #10233a 48%, #190f2b 100%);
+        color: var(--ink);
+      }
+      body::before,
+      body::after {
+        width: 22rem;
+        height: 22rem;
+        filter: blur(42px);
+        opacity: 0.22;
+      }
+      body::before {
+        background: rgba(255, 111, 97, 0.5);
+      }
+      body::after {
+        background: rgba(97, 210, 177, 0.34);
+      }
+      header {
+        min-height: 27rem;
+        background:
+          linear-gradient(
+            115deg,
+            rgba(7, 19, 33, 0.72),
+            rgba(31, 15, 49, 0.74)
+          ),
+          radial-gradient(
+            circle at 70% 20%,
+            rgba(255, 184, 77, 0.28),
+            transparent 22%
+          ),
+          #09172a !important;
+        border-color: rgba(116, 205, 193, 0.2) !important;
+      }
+      header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        background-image:
+          radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.9) 0 1px,
+            transparent 1.5px
+          ),
+          radial-gradient(
+            circle,
+            rgba(97, 210, 177, 0.7) 0 1px,
+            transparent 1.5px
+          );
+        background-size:
+          83px 91px,
+          137px 119px;
+        background-position:
+          12px 18px,
+          55px 42px;
+        animation: starDrift 18s linear infinite;
+        pointer-events: none;
+      }
+      header::after {
+        content: "";
+        position: absolute;
+        left: -5%;
+        right: -5%;
+        bottom: -5rem;
+        height: 13rem;
+        background: linear-gradient(
+          180deg,
+          transparent,
+          rgba(69, 184, 232, 0.18)
+        );
+        clip-path: polygon(
+          0 65%,
+          12% 45%,
+          24% 64%,
+          39% 28%,
+          53% 62%,
+          68% 38%,
+          82% 59%,
+          100% 25%,
+          100% 100%,
+          0 100%
+        );
+        pointer-events: none;
+      }
+      .hero-title {
+        text-shadow: 0 0 28px rgba(255, 184, 77, 0.32);
+      }
+      .hero-purpose {
+        max-width: 42rem;
+        color: #d9eff0;
+        font-size: 1.05rem;
+        line-height: 1.9;
+      }
+      .hero-purpose strong {
+        color: var(--marigold);
+        font-weight: 700;
+      }
+      main {
+        position: relative;
+        z-index: 2;
+      }
+      .card {
+        background: linear-gradient(
+          145deg,
+          rgba(19, 43, 63, 0.9),
+          rgba(12, 27, 44, 0.88)
+        );
+        border-color: rgba(116, 205, 193, 0.25);
+        box-shadow:
+          0 18px 45px rgba(0, 0, 0, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .card:hover {
+        border-color: var(--marigold);
+        box-shadow:
+          0 18px 50px rgba(0, 0, 0, 0.3),
+          0 0 24px rgba(255, 184, 77, 0.12);
+      }
+      .card::before {
+        background: radial-gradient(
+          260px circle at var(--mx, 50%) var(--my, 50%),
+          rgba(97, 210, 177, 0.22),
+          transparent 68%
+        );
+      }
+      .milestone-active {
+        background: linear-gradient(145deg, #442c26, #20192d) !important;
+        border-color: var(--marigold) !important;
+      }
+      .ritu-active {
+        background: linear-gradient(
+          145deg,
+          rgba(24, 74, 75, 0.9),
+          rgba(12, 40, 55, 0.9)
+        );
+      }
+      .met-active {
+        background: linear-gradient(
+          145deg,
+          rgba(21, 59, 84, 0.92),
+          rgba(18, 31, 61, 0.92)
+        );
+      }
+      section > h2,
+      section h2 {
+        text-shadow: 0 0 20px rgba(97, 210, 177, 0.18);
+      }
+      .accent-line {
+        height: 0.25rem !important;
+        background: linear-gradient(
+          90deg,
+          var(--marigold),
+          var(--rust),
+          var(--blue),
+          var(--sage)
+        );
+        box-shadow: 0 0 18px rgba(97, 210, 177, 0.5);
+      }
+      .ambient-orb.one {
+        background: rgba(255, 184, 77, 0.3);
+      }
+      .ambient-orb.two {
+        background: rgba(97, 210, 177, 0.3);
+      }
+      .ambient-orb.three {
+        background: rgba(69, 184, 232, 0.28);
+      }
+      @keyframes starDrift {
+        from {
+          transform: translate3d(0, 0, 0);
+        }
+        to {
+          transform: translate3d(-24px, 18px, 0);
+        }
+      }
     </style>
   </head>
   <body class="font-body min-h-full">
@@ -467,7 +670,7 @@
 
       <div class="max-w-5xl mx-auto px-6 py-10 md:py-14 relative z-10">
         <h1
-          class="hero-title font-display text-3xl md:text-5xl font-semibold mt-2 soft-underline"
+          class="hero-title font-display text-3xl md:text-5xl font-semibold mt-2"
         >
           नेपालको ऋतु
         </h1>
@@ -510,7 +713,6 @@
           </div>
         </div>
       </div>
-      <div class="accent-line h-1 w-full"></div>
     </header>
 
     <main class="max-w-5xl mx-auto px-6 py-10 space-y-14">
@@ -629,10 +831,10 @@
 
       <footer
         class="pt-6 pb-10 text-xs"
-        style="color: #000000; border-top: 1px solid var(--card-border)"
+        style="color: #ffffff; border-top: 1px solid var(--card-border)"
       >
-        ऋतुका मिति दायरा ग्रेगोरियन पात्रोमा अनुमानित मिलान हुन्; विक्रम संवतको
-        चन्द्र पात्रो वर्षैपिच्छे केही फरक पर्न सक्छ।
+        ऋतुका मिति दायरा ग्रेगोरियन मितिसँग अनुमानित मिलान हुन्; विक्रम संवतका
+        चन्द्र मितिहरू वर्षैपिच्छे केही फरक पर्न सक्छन्।
       </footer>
     </main>
 
@@ -929,6 +1131,7 @@
           }
           return ms;
         });
+        const highlightKey = closestDays === 0 ? closestKey : null;
         $("#nextMilestone").textContent =
           closestDays === 0
             ? `आज: ${MILESTONES.find((m) => m.key === closestKey).label}`
@@ -937,7 +1140,7 @@
         $("#milestoneGrid").innerHTML = cards
           .map(
             (ms, i) => `
-    <div class="card rounded-2xl p-5 ${ms.key === closestKey ? "milestone-active" : ""}" style="animation-delay:${i * 70}ms, ${600 + i * 70}ms">
+    <div class="card rounded-2xl p-5 ${ms.key === highlightKey ? "milestone-active" : ""}" style="animation-delay:${i * 70}ms, ${600 + i * 70}ms">
       <div class="flex items-center justify-between">
         ${iconMon(ms.icon, ms.color)}
         <span class="font-mono text-xs" style="color:var(--ink-soft);">${monthName(ms.m)} ${nepaliNumber(ms.d)}</span>
@@ -1053,7 +1256,9 @@
           },
           { threshold: 0.15 },
         );
-        document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => observer.observe(el));
       }
 
       function enableCardTilt() {
@@ -1083,7 +1288,9 @@
         armReveals();
         if (isFinePointer) enableCardTilt();
       } else {
-        document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => el.classList.add("in-view"));
       }
 
       render();
