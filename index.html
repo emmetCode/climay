@@ -85,7 +85,6 @@
             transparent 32%
           ),
           linear-gradient(180deg, var(--bg) 0%, #f0eadc 100%);
-        background-attachment: fixed;
         overflow-x: hidden;
       }
       body::before,
@@ -96,11 +95,11 @@
         width: 28rem;
         height: 28rem;
         border-radius: 50%;
-        filter: blur(90px);
+        filter: blur(54px);
         opacity: 0.26;
         pointer-events: none;
         z-index: 0;
-        animation: drift 18s ease-in-out infinite alternate;
+        animation: drift 24s ease-in-out infinite alternate;
       }
       body::before {
         top: -8rem;
@@ -177,10 +176,10 @@
       .ambient-orb {
         position: absolute;
         border-radius: 9999px;
-        filter: blur(22px);
+        filter: blur(14px);
         opacity: 0.45;
         pointer-events: none;
-        animation: drift 14s ease-in-out infinite alternate;
+        animation: drift 22s ease-in-out infinite alternate;
       }
       .ambient-orb.one {
         width: 17rem;
@@ -247,7 +246,7 @@
         height: 5rem;
         border-radius: 50%;
         background: rgba(224, 232, 220, 0.2);
-        filter: blur(16px);
+        filter: blur(10px);
         opacity: 0;
         animation: fogDrift 11s ease-in-out infinite alternate;
       }
@@ -315,15 +314,6 @@
         }
         100% {
           transform: translate3d(22px, 18px, 0) scale(1.08);
-        }
-      }
-      @keyframes cardFloat {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-4px);
         }
       }
       @keyframes pulseGlow {
@@ -449,6 +439,7 @@
         *::after {
           animation-duration: 0.001ms !important;
           animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
           transition-duration: 0.001ms !important;
         }
         body.armed .reveal {
@@ -879,6 +870,8 @@
         return msgs[m];
       }
 
+      let lastContentKey = "";
+
       function render() {
         const p = nepalParts();
         const timeStr = nepaliNumber(`${p.hour}:${p.minute}:${p.second}`);
@@ -916,6 +909,10 @@
           p.year,
         );
         $("#tempStatus").textContent = tempMessage(p.month);
+
+        const contentKey = `${p.year}-${p.month}-${p.day}-${ritu.name}`;
+        if (contentKey === lastContentKey) return;
+        lastContentKey = contentKey;
 
         // Milestones
         let closestKey = null,
